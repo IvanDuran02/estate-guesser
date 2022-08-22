@@ -3,6 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import exampleHouse from "../assets/house.jpeg";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
+import { useSession, signIn, signOut } from "next-auth/react";
 // import { trpc } from "../utils/trpc";
 
 // type Card = {
@@ -12,6 +13,18 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 
 const Home: NextPage = () => {
   // const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: session }: any = useSession();
+
+  if (session) {
+    return (
+      <div className="text-white">
+        <div>You are logged in</div>
+        <button onClick={() => signOut()}>Sign Out!</button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -25,6 +38,12 @@ const Home: NextPage = () => {
         <div>
           <h1 className="text-4xl">Estate Guesser</h1>
           <p className="opacity-60">Guess the house price to win!</p>
+          <button
+            onClick={() => signIn()}
+            className="absolute top-16 right-40 opacity-50 hover:opacity-100 hover:scale-105 transition-all"
+          >
+            Sign In
+          </button>
         </div>
         <div className="flex justify-center items-center space-x-4">
           <ChevronLeftIcon className="h-12 w-12 hover:scale-105 hover:text-red-400 cursor-pointer transition-all " />

@@ -49,14 +49,19 @@ const Home: NextPage = () => {
               className="w-6 lg:w-8  mt-6 hover:opacity-100 cursor-pointer hover:text-red-400"
               onClick={() => menuOpen()}
             />
-            <div>
-              <LogoutIcon
-                className="w-6 lg:w-8 hover:text-red-400 text-white"
-                onClick={() => signOut()}
-              />
-              <br />
+
+            {session ? (
+              <div>
+                <LogoutIcon
+                  className="w-6 lg:w-8 hover:text-red-400 text-white"
+                  onClick={() => signOut()}
+                />
+                <br />
+                <CogIcon className="w-6 lg:w-8 hover:animate-spin hover:text-red-400 transition-all mb-6" />
+              </div>
+            ) : (
               <CogIcon className="w-6 lg:w-8 hover:animate-spin hover:text-red-400 transition-all mb-6" />
-            </div>
+            )}
           </div>
         ) : (
           <>
@@ -70,7 +75,7 @@ const Home: NextPage = () => {
                 <CogIcon className="w-6 lg:w-8 hover:animate-spin hover:text-red-400 transition-all mb-6" />
               </div>
               <div className="h-[91vh] bg-red-400 w-1 rounded-full" />
-              <div className="flex justify-center items-center h-screen w-[100%]">
+              <div className="flex justify-center pt-24 h-screen w-[100%]">
                 {!session ? (
                   <div className="hover:text-red-400 hover:scale-105 transition-all">
                     <button onClick={() => signIn()}>Sign In</button>
@@ -96,7 +101,7 @@ const Home: NextPage = () => {
             {!session ? (
               <p className="opacity-50 text-center">Login to save progress!</p>
             ) : (
-              <p className="opacity-50 text-center">session.user.name</p>
+              <p className="opacity-50 text-center">{session.user.name}</p>
             )}
           </div>
 

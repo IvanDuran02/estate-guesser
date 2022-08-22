@@ -75,11 +75,14 @@ const Home: NextPage = () => {
                 <CogIcon className="w-6 lg:w-8 hover:animate-spin hover:text-red-400 transition-all mb-6" />
               </div>
               <div className="h-[91vh] bg-red-400 w-1 rounded-full" />
-              <div className="flex justify-center pt-24 h-screen w-[100%]">
+              <div className="flex justify-center items-start pt-24 w-[100%] h-full">
                 {!session ? (
-                  <div className="hover:text-red-400 hover:scale-105 transition-all">
-                    <button onClick={() => signIn()}>Sign In</button>
-                  </div>
+                  <button
+                    onClick={() => signIn()}
+                    className="hover:text-red-400 hover:scale-105 transition-all"
+                  >
+                    Sign In
+                  </button>
                 ) : (
                   <div>
                     <button

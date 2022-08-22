@@ -45,8 +45,8 @@ const Home: NextPage = () => {
             Sign In
           </button>
         </div>
-        <div className="flex justify-center items-center space-x-4">
-          <ChevronLeftIcon className="h-12 w-12 hover:scale-105 hover:text-red-400 cursor-pointer transition-all " />
+        <div className="flex justify-center items-center">
+          <ChevronLeftIcon className="h-12 w-12 hover:scale-105 hover:text-red-400 cursor-pointer transition-all pr-4" />
           <Image
             src={exampleHouse}
             alt="House"
@@ -54,7 +54,7 @@ const Home: NextPage = () => {
             width={1280}
             className="rounded-md shadow-lg"
           />
-          <ChevronRightIcon className="h-12 w-12 hover:scale-105 hover:text-red-400 cursor-pointer transition-all" />
+          <ChevronRightIcon className="h-12 w-12 hover:scale-105 hover:text-red-400 cursor-pointer transition-all pl-4" />
         </div>
         <div>
           <input

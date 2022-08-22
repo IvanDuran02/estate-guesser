@@ -48,16 +48,16 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex justify-between flex-row-reverse items-center h-screen w-screen font-mono bg-[#202020] text-white p-12 relative text-center overflow-hidden">
-        <div className="bg-black opacity-60 h-[100vh] -m-12  flex justify-between p-2 items-center flex-col rounded-lg w-[4%] hover:opacity-80 transition-all ">
+      <main className="flex md:justify-between justify-center flex-row-reverse items-center h-screen w-screen font-mono bg-[#202020] text-white p-12 relative text-center overflow-hidden">
+        <div className="bg-black opacity-60 h-[100vh] -m-12  md:flex justify-between p-2 items-center flex-col rounded-lg w-[4%] hover:opacity-80 transition-all hidden">
           <MenuIcon
-            className="w-8 h-8 mt-4 hover:opacity-100 cursor-pointer hover:text-red-400"
+            className="w-6 lg:w-8  mt-4 hover:opacity-100 cursor-pointer hover:text-red-400"
             onClick={() => menuOpen()}
           />
 
-          <CogIcon className="w-8 h-8 hover:animate-spin hover:text-red-400 transition-all mb-4" />
+          <CogIcon className="w-6 lg:w-8 hover:animate-spin hover:text-red-400 transition-all mb-4" />
         </div>
-        <div className="flex flex-col w-screen">
+        <div className="flex flex-col w-screen items-center">
           <div>
             <h1 className="text-4xl font-bold text-center">Estate Guesser</h1>
             <p className="opacity-50 text-center">

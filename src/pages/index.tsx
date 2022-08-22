@@ -4,6 +4,8 @@ import Image from "next/image";
 import exampleHouse from "../assets/house.jpeg";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { useSession, signIn, signOut } from "next-auth/react";
+import github from "../assets/github.png";
+import Link from "next/link";
 // import { trpc } from "../utils/trpc";
 
 // type Card = {
@@ -34,19 +36,33 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col items-center h-screen w-screen font-mono bg-[#202020] text-white p-12 justify-between relative">
+      <main className="flex flex-col items-center h-screen w-screen font-mono bg-[#202020] text-white p-12 justify-between relative text-center">
         <div>
-          <h1 className="text-4xl">Estate Guesser</h1>
-          <p className="opacity-60">Guess the house price to win!</p>
-          <button
-            onClick={() => signIn()}
-            className="absolute top-16 right-40 opacity-50 hover:opacity-100 hover:scale-105 transition-all"
-          >
-            Sign In
-          </button>
+          <div className="flex justify-between items-center w-auto">
+            <div className="w-8 h-8 opacity-50 hover:opacity-100 cursor-pointer absolute top-14 left-96">
+              <Link
+                href="https://github.com/IvanDuran02/estate-guesser"
+                target={"_blank"}
+              >
+                <Image src={github} alt="github" />
+              </Link>
+            </div>
+
+            <h1 className="text-4xl text-center">Estate Guesser</h1>
+
+            <button
+              onClick={() => signIn()}
+              className="opacity-50 hover:opacity-100 hover:scale-105 transition-all absolute top-14 right-96"
+            >
+              Sign In
+            </button>
+          </div>
+          <p className="opacity-60 text-center">
+            Guess the house price to win!
+          </p>
         </div>
         <div className="flex justify-center items-center">
-          <ChevronLeftIcon className="h-12 w-12 hover:scale-105 hover:text-red-400 cursor-pointer transition-all pr-4" />
+          <ChevronLeftIcon className="h-16 w-16 hover:scale-110 hover:text-red-400 cursor-pointer transition-all pr-2 hover:-translate-x-1" />
           <div>
             <Image
               src={exampleHouse}
@@ -56,7 +72,7 @@ const Home: NextPage = () => {
               className="rounded-md shadow-lg"
             />
           </div>
-          <ChevronRightIcon className="h-12 w-12 hover:scale-105 hover:text-red-400 cursor-pointer transition-all pl-4" />
+          <ChevronRightIcon className="h-16 w-16 hover:scale-110 hover:text-red-400 cursor-pointer transition-all pl-2 hover:translate-x-1" />
         </div>
         <div>
           <input

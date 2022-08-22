@@ -47,13 +47,15 @@ const Home: NextPage = () => {
         </div>
         <div className="flex justify-center items-center">
           <ChevronLeftIcon className="h-12 w-12 hover:scale-105 hover:text-red-400 cursor-pointer transition-all pr-4" />
-          <Image
-            src={exampleHouse}
-            alt="House"
-            height={720}
-            width={1280}
-            className="rounded-md shadow-lg"
-          />
+          <div>
+            <Image
+              src={exampleHouse}
+              alt="House"
+              width={900}
+              height={508}
+              className="rounded-md shadow-lg"
+            />
+          </div>
           <ChevronRightIcon className="h-12 w-12 hover:scale-105 hover:text-red-400 cursor-pointer transition-all pl-4" />
         </div>
         <div>

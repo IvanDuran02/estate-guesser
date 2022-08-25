@@ -30,7 +30,7 @@ const Home: NextPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: session }: any = useSession();
 
-  const { data, isLoading, isError } = trpc.useQuery(
+  const { data, isLoading, isError }: any = trpc.useQuery(
     ["example.getRandomProperty"],
     {
       refetchOnWindowFocus: false,

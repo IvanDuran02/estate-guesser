@@ -1,5 +1,6 @@
 import { createRouter } from "./context";
 import { z } from "zod";
+import { getRandomPropertyId } from "../../utils/getRandomProperty";
 
 export const exampleRouter = createRouter()
   .query("hello", {
@@ -14,8 +15,20 @@ export const exampleRouter = createRouter()
       };
     },
   })
-  .query("getAll", {
+  .query("getRandomProperty", {
     async resolve({ ctx }) {
-      // return await ctx.prisma.property.findMany();
+      return await ctx.prisma.property
+        .findMany({
+          where: {
+            id: getRandomPropertyId(),
+          },
+        })
+        .then((property) => {
+          return ctx.prisma.images.findMany({
+            where: {
+              propertyID: property[0]?.id,
+            },
+          });
+        });
     },
   });

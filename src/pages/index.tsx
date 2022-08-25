@@ -2,6 +2,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import exampleHouse from "../assets/house.jpeg";
+import { trpc } from "../utils/trpc";
+
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -13,7 +15,8 @@ import {
 import { useSession, signIn, signOut } from "next-auth/react";
 import github from "../assets/github.png";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getRandomPropertyId } from "../utils/getRandomProperty";
 // import { trpc } from "../utils/trpc";
 
 // type Card = {
@@ -33,6 +36,13 @@ const Home: NextPage = () => {
     setMenuToggle(!menuToggle);
     console.log("menu toggled");
   };
+
+  const handleClick = () => {
+    console.log("clicked");
+    console.log(getRandomPropertyId());
+  };
+
+  // const { data } = trpc.useQuery(["example.getRandomProperty"]);
 
   return (
     <>
@@ -100,7 +110,14 @@ const Home: NextPage = () => {
 
         <div className="flex flex-col w-screen items-center">
           <div>
-            <h1 className="text-4xl font-bold text-center">Estate Guesser</h1>
+            <h1
+              className="text-4xl font-bold text-center"
+              onClick={() => {
+                handleClick();
+              }}
+            >
+              Estate Guesser
+            </h1>
             {!session ? (
               <p className="opacity-50 text-center">Login to save progress!</p>
             ) : (

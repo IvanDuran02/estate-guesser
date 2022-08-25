@@ -47,19 +47,20 @@ const Home: NextPage = () => {
   } = trpc.useQuery(["example.getRandomPropertyImages"], {
     refetchOnWindowFocus: false,
   });
-  if (imageLoading && propertyLoading) {
-    return (
-      <div>
-        <Image
-          src={exampleHouse}
-          alt="House"
-          width={900}
-          height={508}
-          className="rounded-md shadow-lg"
-        />
-      </div>
-    );
-  }
+
+  // if (imageLoading && propertyLoading) {
+  //   return (
+  //     <div>
+  //       <Image
+  //         src={exampleHouse}
+  //         alt="House"
+  //         width={900}
+  //         height={508}
+  //         className="rounded-md shadow-lg"
+  //       />
+  //     </div>
+  //   );
+  // }
 
   // if (imageData && propertyData) {
   //   return (
@@ -82,9 +83,9 @@ const Home: NextPage = () => {
   //   );
   // }
 
-  if (imageError || propertyError) {
-    return <div>Something unexpected happened :/</div>;
-  }
+  // if (imageError || propertyError) {
+  //   return <div>Something unexpected happened :/</div>;
+  // }
 
   // const [image, setImage] = useState(0);
 

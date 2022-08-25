@@ -26,13 +26,20 @@ import { Images, Property } from "@prisma/client";
 // };
 
 export const propertyCard = () => {
-  const { data, isLoading, isError } = trpc.useQuery(
-    ["example.getRandomProperty"],
-    {
-      refetchOnWindowFocus: false,
-    }
-  );
-  if (isLoading) {
+  // const { data: propertyData, isLoading: propertyLoading, isError: propertyError } = trpc.useQuery(
+  //   ["example.getRandomProperty"],
+  //   {
+  //     refetchOnWindowFocus: false,
+  //   }
+  //   );
+  const {
+    data: imageData,
+    isLoading: imageLoading,
+    isError: imageError,
+  } = trpc.useQuery(["example.getRandomPropertyImages"], {
+    refetchOnWindowFocus: false,
+  });
+  if (imageLoading) {
     return (
       <div>
         <Image
@@ -46,10 +53,10 @@ export const propertyCard = () => {
     );
   }
 
-  if (data) {
+  if (imageData) {
     return (
       <div>
-        {data.map((property: Images) => (
+        {imageData.map((property: Images) => (
           <div key={property.id}>
             <Image
               src={property.imageURL}
@@ -64,7 +71,7 @@ export const propertyCard = () => {
     );
   }
 
-  if (isError) {
+  if (imageError) {
     return <div>Something unexpected happened :/</div>;
   }
 };

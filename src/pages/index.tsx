@@ -16,6 +16,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import github from "../assets/github.png";
 import Link from "next/link";
 import { useState } from "react";
+import { Images, Property } from "@prisma/client";
 
 // import { trpc } from "../utils/trpc";
 
@@ -24,37 +25,75 @@ import { useState } from "react";
 //   description: string;
 // };
 
+export const propertyCard = () => {
+  const { data, isLoading, isError } = trpc.useQuery(
+    ["example.getRandomProperty"],
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+  if (isLoading) {
+    return (
+      <div>
+        <Image
+          src={exampleHouse}
+          alt="House"
+          width={900}
+          height={508}
+          className="rounded-md shadow-lg"
+        />
+      </div>
+    );
+  }
+
+  if (data) {
+    return (
+      <div>
+        {data.map((property: Images) => (
+          <div key={property.id}>
+            <Image
+              src={property.imageURL}
+              alt="House"
+              height={508}
+              width={900}
+              className="rounded-md shadow-lg"
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>Something unexpected happened :/</div>;
+  }
+};
+
 const Home: NextPage = () => {
   // const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: session }: any = useSession();
 
-  const { data, isLoading, isError }: any = trpc.useQuery(
-    ["example.getRandomProperty"],
-    {
-      refetchOnWindowFocus: false,
-    }
-  );
-
   const [menuToggle, setMenuToggle] = useState(false);
 
-  const [image, setImage] = useState(0);
+  // const [image, setImage] = useState(0);
 
-  const imageMax = data?.length;
+  // const imageMax = data?.length;
+  // console.log(imageMax);
 
-  const handleNextImage = async () => {
-    if (image === imageMax) {
-      setImage(0);
-    }
-    setImage(image + 1);
-  };
-  const handlePrevImage = async () => {
-    if (image === imageMax) {
-      setImage(imageMax);
-    }
-    setImage(image - 1);
-  };
+  // const handleNextImage = async () => {
+  //   if (image === imageMax) {
+  //     setImage(0);
+  //   }
+  //   setImage(image + 1);
+  // };
+  // const handlePrevImage = async () => {
+  //   if (image === imageMax) {
+  //     setImage(imageMax);
+  //   }
+  //   setImage(image - 1);
+  // };
 
   const menuOpen = () => {
     setMenuToggle(!menuToggle);
@@ -137,32 +176,12 @@ const Home: NextPage = () => {
 
           <div className="flex justify-center items-center my-12">
             <ChevronLeftIcon
-              onClick={() => handlePrevImage()}
+              // onClick={() => handlePrevImage()}
               className="h-16 w-16 hover:scale-110 hover:text-red-400 cursor-pointer transition-all pr-2 hover:-translate-x-1"
             />
-            <div>
-              {isLoading ? (
-                <Image
-                  src={exampleHouse}
-                  alt="House"
-                  width={900}
-                  height={508}
-                  className="rounded-md shadow-lg"
-                />
-              ) : isError ? (
-                <div>Error</div>
-              ) : (
-                <Image
-                  src={data[image].imageURL}
-                  alt="House"
-                  width={900}
-                  height={508}
-                  className="rounded-md shadow-lg"
-                />
-              )}
-            </div>
+            <div></div>
             <ChevronRightIcon
-              onClick={() => handleNextImage()}
+              // onClick={() => handleNextImage()}
               className="h-16 w-16 hover:scale-110 hover:text-red-400 cursor-pointer transition-all pl-2 hover:translate-x-1 z-0"
             />
           </div>

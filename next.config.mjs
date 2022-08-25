@@ -15,4 +15,12 @@ function defineNextConfig(config) {
 export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    images: {
+      allowFutureImage: true,
+    },
+  },
+  images: {
+    domains: ["photos.zillowstatic.com", "www.zillowstatic.com"],
+  },
 });

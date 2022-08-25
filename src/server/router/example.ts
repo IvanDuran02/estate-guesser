@@ -26,7 +26,7 @@ export const exampleRouter = createRouter()
         .then((property) => {
           return ctx.prisma.images.findMany({
             where: {
-              propertyID: property[0]?.id,
+              propertyID: property[0]!.id,
             },
           });
         });

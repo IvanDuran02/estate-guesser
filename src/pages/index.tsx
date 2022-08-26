@@ -15,7 +15,7 @@ import {
 import { useSession, signIn, signOut } from "next-auth/react";
 import github from "../assets/github.png";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Images, Property } from "@prisma/client";
 
 // import { trpc } from "../utils/trpc";
@@ -49,6 +49,10 @@ const Home: NextPage = () => {
   } = trpc.useQuery(["example.getRandomPropertyImages"], {
     refetchOnWindowFocus: false,
   });
+
+  useEffect(() => {
+    setImage(0);
+  }, []);
 
   if (imageError || propertyError) {
     return <div>Something unexpected happened :/</div>;
@@ -157,7 +161,7 @@ const Home: NextPage = () => {
             />
             <div className="">
               {imageLoading && propertyLoading ? (
-                <div className="absolute ">
+                <div className="">
                   <Image
                     src={exampleHouse}
                     alt="House"
@@ -176,6 +180,7 @@ const Home: NextPage = () => {
                     alt="House"
                     width={900}
                     height={508}
+                    className="rounded-md"
                   />
                   <p>
                     {image + 1}/{imageData.length}

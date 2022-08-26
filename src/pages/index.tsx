@@ -173,16 +173,18 @@ const Home: NextPage = () => {
               ) : imageData && propertyData ? (
                 <div className="text-white text-2xl">
                   {propertyData.map((property: Property) => (
-                    <div key={property.id}>{property.address}</div>
+                    <div key={property.id} className="pb-4">
+                      {property.address}
+                    </div>
                   ))}
                   <Image
                     src={imageData[image]?.imageURL || exampleHouse}
                     alt="House"
                     width={900}
                     height={508}
-                    className="rounded-md"
+                    className="rounded-md "
                   />
-                  <p>
+                  <p className="pt-2">
                     {image + 1}/{imageData.length}
                   </p>
                 </div>

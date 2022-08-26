@@ -31,6 +31,8 @@ const Home: NextPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: session }: any = useSession();
 
+  const [image, setImage] = useState(0);
+
   const [menuToggle, setMenuToggle] = useState(false);
 
   const {
@@ -48,62 +50,26 @@ const Home: NextPage = () => {
     refetchOnWindowFocus: false,
   });
 
-  // if (imageLoading && propertyLoading) {
-  //   return (
-  //     <div>
-  //       <Image
-  //         src={exampleHouse}
-  //         alt="House"
-  //         width={900}
-  //         height={508}
-  //         className="rounded-md shadow-lg"
-  //       />
-  //     </div>
-  //   );
-  // }
+  if (imageError || propertyError) {
+    return <div>Something unexpected happened :/</div>;
+  }
 
-  // if (imageData && propertyData) {
-  //   return (
-  //     <div className="text-white text-2xl">
-  //       {propertyData.map((property: Property) => (
-  //         <div key={property.id}>{property.address}</div>
-  //       ))}
-  //       {imageData.map((property: Images) => (
-  //         <div key={property.id}>
-  //           <Image
-  //             src={property.imageURL}
-  //             alt="House"
-  //             height={508}
-  //             width={900}
-  //             className="rounded-md shadow-lg"
-  //           />
-  //         </div>
-  //       ))}
-  //     </div>
-  //   );
-  // }
-
-  // if (imageError || propertyError) {
-  //   return <div>Something unexpected happened :/</div>;
-  // }
-
-  // const [image, setImage] = useState(0);
-
-  // const imageMax = data?.length;
-  // console.log(imageMax);
-
-  // const handleNextImage = async () => {
-  //   if (image === imageMax) {
-  //     setImage(0);
-  //   }
-  //   setImage(image + 1);
-  // };
-  // const handlePrevImage = async () => {
-  //   if (image === imageMax) {
-  //     setImage(imageMax);
-  //   }
-  //   setImage(image - 1);
-  // };
+  const handleNextImage = async () => {
+    if (imageData) {
+      if (image >= imageData.length - 1) {
+        return setImage(0);
+      }
+      setImage(image + 1);
+    }
+  };
+  const handlePrevImage = async () => {
+    if (imageData) {
+      if (image <= 0) {
+        return setImage(imageData.length - 1);
+      }
+      setImage(image - 1);
+    }
+  };
 
   const menuOpen = () => {
     setMenuToggle(!menuToggle);
@@ -186,20 +152,41 @@ const Home: NextPage = () => {
 
           <div className="flex justify-center items-center my-12">
             <ChevronLeftIcon
-              // onClick={() => handlePrevImage()}
+              onClick={() => handlePrevImage()}
               className="h-16 w-16 hover:scale-110 hover:text-red-400 cursor-pointer transition-all pr-2 hover:-translate-x-1"
             />
-            <div>
-              <Image
-                src={exampleHouse}
-                alt="House"
-                width={900}
-                height={508}
-                className="rounded-md shadow-lg"
-              />
+            <div className="">
+              {imageLoading && propertyLoading ? (
+                <div className="absolute ">
+                  <Image
+                    src={exampleHouse}
+                    alt="House"
+                    width={900}
+                    height={508}
+                    className="rounded-md shadow-lg"
+                  />
+                </div>
+              ) : imageData && propertyData ? (
+                <div className="text-white text-2xl">
+                  {propertyData.map((property: Property) => (
+                    <div key={property.id}>{property.address}</div>
+                  ))}
+                  <Image
+                    src={imageData[image]?.imageURL || exampleHouse}
+                    alt="House"
+                    width={900}
+                    height={508}
+                  />
+                  <p>
+                    {image + 1}/{imageData.length}
+                  </p>
+                </div>
+              ) : (
+                <div>Something went wrong...</div>
+              )}
             </div>
             <ChevronRightIcon
-              // onClick={() => handleNextImage()}
+              onClick={() => handleNextImage()}
               className="h-16 w-16 hover:scale-110 hover:text-red-400 cursor-pointer transition-all pl-2 hover:translate-x-1 z-0"
             />
           </div>

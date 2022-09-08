@@ -2,8 +2,6 @@ import { createRouter } from "./context";
 import { z } from "zod";
 import { getRandomPropertyId } from "../../utils/getRandomProperty";
 
-const randomIndex = getRandomPropertyId();
-
 export const exampleRouter = createRouter()
   .query("hello", {
     input: z
@@ -18,7 +16,11 @@ export const exampleRouter = createRouter()
     },
   })
   .query("getRandomProperty", {
-    async resolve({ ctx }) {
+    input: z.object({
+      id: z.number(),
+    }),
+    async resolve({ ctx, input }) {
+      const randomIndex: any = input.id;
       return await ctx.prisma.property.findMany({
         where: {
           id: randomIndex,
@@ -27,7 +29,11 @@ export const exampleRouter = createRouter()
     },
   })
   .query("getRandomPropertyImages", {
-    async resolve({ ctx }) {
+    input: z.object({
+      id: z.number(),
+    }),
+    async resolve({ ctx, input }) {
+      const randomIndex: any = input.id;
       return ctx.prisma.images.findMany({
         where: {
           propertyID: randomIndex,

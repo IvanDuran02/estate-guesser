@@ -17,6 +17,7 @@ import github from "../assets/github.png";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Images, Property } from "@prisma/client";
+import { getRandomPropertyId } from "../utils/getRandomProperty";
 
 // import { trpc } from "../utils/trpc";
 
@@ -37,18 +38,20 @@ const Home: NextPage = () => {
 
   const [menuToggle, setMenuToggle] = useState(false);
 
+  const [propertyNum] = useState(getRandomPropertyId());
+
   const {
     data: propertyData,
     isLoading: propertyLoading,
     isError: propertyError,
-  } = trpc.useQuery(["example.getRandomProperty"], {
+  } = trpc.useQuery(["example.getRandomProperty", { id: propertyNum }], {
     refetchOnWindowFocus: false,
   });
   const {
     data: imageData,
     isLoading: imageLoading,
     isError: imageError,
-  } = trpc.useQuery(["example.getRandomPropertyImages"], {
+  } = trpc.useQuery(["example.getRandomPropertyImages", { id: propertyNum }], {
     refetchOnWindowFocus: false,
   });
 
@@ -205,12 +208,12 @@ const Home: NextPage = () => {
               placeholder="Guess Price!"
               className="w-[40vh] items-center text-center h-8 rounded-xl outline-none text-white bg-[black] shadow-xl "
             />
-            {!priceToggle && propertyData ? (
+            {priceToggle && propertyData ? (
+              <h1>{propertyData[0]?.price}</h1>
+            ) : (
               <button onClick={() => setPriceToggle(!priceToggle)}>
                 Show Price
               </button>
-            ) : (
-              <h1>{propertyData![0]?.price}</h1>
             )}
           </div>
           <p className="opacity-60">Note: App still in production!</p>

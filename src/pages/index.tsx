@@ -13,10 +13,10 @@ import {
   XIcon,
 } from "@heroicons/react/solid";
 import { useSession, signIn, signOut } from "next-auth/react";
-import github from "../assets/github.png";
-import Link from "next/link";
+// import github from "../assets/github.png";
+// import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Images, Property } from "@prisma/client";
+import { Property } from "@prisma/client";
 import { getRandomPropertyId } from "../utils/getRandomProperty";
 
 // import { trpc } from "../utils/trpc";

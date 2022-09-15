@@ -32,14 +32,19 @@ const Home: NextPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: session }: any = useSession();
 
+  // shows price of the house on toggle
   const [priceToggle, setPriceToggle] = useState(false);
 
+  // switches between images for the house
   const [image, setImage] = useState(0);
 
+  // opens and closes the side hamburger menu
   const [menuToggle, setMenuToggle] = useState(false);
 
+  // gets a random property id from the database
   const [propertyNum] = useState(getRandomPropertyId());
 
+  // requesting data from db matching the random property id and setting it to propertyData & imageData
   const {
     data: propertyData,
     isLoading: propertyLoading,

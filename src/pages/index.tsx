@@ -65,7 +65,12 @@ const Home: NextPage = () => {
   }, []);
 
   if (imageError || propertyError) {
-    return <div>Something unexpected happened :/</div>;
+    return (
+      <div className="text-white  justify-center items-center">
+        <h1 className="text-4xl">Something unexpected happened :/</h1>
+        <p>Failed to load a property from database</p>
+      </div>
+    );
   }
 
   const handleNextImage = async () => {

@@ -212,16 +212,24 @@ const Home: NextPage = () => {
               className="h-16 w-16 hover:scale-110 hover:text-red-400 cursor-pointer transition-all pl-2 hover:translate-x-1 z-0"
             />
           </div>
-          <div className="flex flex-col">
-            <input
+          <div className="flex flex-col -mt-5 mb-5">
+            {/* <input
               type=""
               placeholder="Guess Price!"
               className="w-[40vh] items-center text-center h-8 rounded-xl outline-none text-white bg-[black] shadow-xl "
-            />
+            /> */}
             {priceToggle && propertyData ? (
-              <h1>{propertyData[0]?.price}</h1>
+              <h1
+                className="text-xl text-red-400 cursor-pointer hover:scale-110"
+                onClick={() => setPriceToggle(!priceToggle)}
+              >
+                {propertyData[0]?.price}
+              </h1>
             ) : (
-              <button onClick={() => setPriceToggle(!priceToggle)}>
+              <button
+                className="w-36 text-white h-10 rounded-xl outline-none shadow-xl border border-white hover:scale-110 hover:bg-white hover:text-black hover:border-black transition-all"
+                onClick={() => setPriceToggle(!priceToggle)}
+              >
                 Show Price
               </button>
             )}

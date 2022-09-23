@@ -1,3 +1,8 @@
 export const getRandomPropertyId = () => {
-  return Math.floor(Math.random() * (562 - 339 + 1)) + 339;
+  const FirstPropertyId = 9;
+  const LastPropertyId = 11;
+  return (
+    Math.floor(Math.random() * (LastPropertyId - FirstPropertyId + 1)) +
+    FirstPropertyId
+  );
 };

@@ -189,7 +189,7 @@ const Home: NextPage = () => {
                 </div>
 
                 <img
-                  src={imageData[image]?.imageURL || exampleHouse}
+                  src={imageData[image]?.imageURL}
                   alt="House"
                   width={900}
                   height={508}

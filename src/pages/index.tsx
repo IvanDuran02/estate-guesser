@@ -1,8 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
+import NextImage from "next/image";
 import exampleHouse from "../assets/house.jpeg";
-import { trpc } from "../utils/trpc";
 
 import {
   ChevronLeftIcon,
@@ -13,18 +12,9 @@ import {
   XIcon,
 } from "@heroicons/react/solid";
 import { useSession, signIn, signOut } from "next-auth/react";
-// import github from "../assets/github.png";
-// import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Property } from "@prisma/client";
 import { getRandomPropertyId } from "../utils/getRandomProperty";
-
-// import { trpc } from "../utils/trpc";
-
-// type Card = {
-//   name: string;
-//   description: string;
-// };
+import { queryProperty, queryPropertyImages } from "../utils/queries";
 
 const Home: NextPage = () => {
   // const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
@@ -44,38 +34,25 @@ const Home: NextPage = () => {
   // gets a random property id from the database
   const [propertyNum] = useState(getRandomPropertyId());
 
-  // requesting data from db matching the random property id and setting it to propertyData & imageData
-  const {
-    data: propertyData,
-    isLoading: propertyLoading,
-    isError: propertyError,
-  } = trpc.useQuery(["example.getRandomProperty", { id: propertyNum }], {
-    refetchOnWindowFocus: false,
-  });
-  const {
-    data: imageData,
-    isLoading: imageLoading,
-    isError: imageError,
-  } = trpc.useQuery(["example.getRandomPropertyImages", { id: propertyNum }], {
-    refetchOnWindowFocus: false,
-  });
-
-  useEffect(() => {
-    setImage(0);
-  }, []);
-
-  if (imageError || propertyError) {
-    return (
-      <div className="text-white  justify-center items-center">
-        <h1 className="text-4xl">Something unexpected happened :/</h1>
-        <p>Failed to load a property from database</p>
-      </div>
-    );
-  }
+  const [propertyData, setPropertyData] = useState<
+    (
+      | {
+          address: string;
+          id: number;
+          link: string;
+          price: string;
+          zpid: string;
+        }
+      | undefined
+    )[]
+  >([]);
+  const [imageData, setImageData] = useState<
+    ({ id: number; imageURL: string; propertyID: number } | undefined)[]
+  >([]);
 
   const handleNextImage = async () => {
     if (imageData) {
-      if (image >= imageData.length - 1) {
+      if (image >= imageData?.length - 1) {
         return setImage(0);
       }
       setImage(image + 1);
@@ -94,6 +71,26 @@ const Home: NextPage = () => {
     setMenuToggle(!menuToggle);
     console.log("menu toggled");
   };
+
+  useEffect(() => {
+    setImage(0);
+    setPropertyData(queryProperty(propertyNum));
+    setImageData(queryPropertyImages(propertyNum));
+  }, [propertyNum]);
+
+  useEffect(() => {
+    if (imageData) {
+      imageData.forEach((picture) => {
+        console.log(picture?.imageURL);
+        const imgElement: any = new window.Image(); // Use 'window.Image' to explicitly refer to the browser's Image constructor
+        imgElement.src = picture?.imageURL;
+      });
+    }
+  }, [imageData]);
+
+  if (!propertyData && !imageData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -175,7 +172,7 @@ const Home: NextPage = () => {
               className="h-16 w-16 hover:scale-110 hover:text-red-400 cursor-pointer transition-all pr-2 hover:-translate-x-1"
             />
             <div className="">
-              {imageLoading && propertyLoading ? (
+              {/* {imageLoading && propertyLoading ? (
                 <div className="">
                   <Image
                     src={exampleHouse}
@@ -185,27 +182,26 @@ const Home: NextPage = () => {
                     className="rounded-md shadow-lg"
                   />
                 </div>
-              ) : imageData && propertyData ? (
-                <div className="text-white text-2xl">
-                  {propertyData.map((property: Property) => (
-                    <div key={property.id} className="pb-4">
-                      {property.address}
-                    </div>
-                  ))}
-                  <Image
-                    src={imageData[image]?.imageURL || exampleHouse}
-                    alt="House"
-                    width={900}
-                    height={508}
-                    className="rounded-md "
-                  />
-                  <p className="pt-2">
-                    {image + 1}/{imageData.length}
-                  </p>
+              ) : imageData && propertyData ? ( */}
+              <div className="text-white text-2xl">
+                <div key={propertyData[0]?.address} className="pb-4">
+                  {propertyData[0]?.address}
                 </div>
-              ) : (
+
+                <img
+                  src={imageData[image]?.imageURL || exampleHouse}
+                  alt="House"
+                  width={900}
+                  height={508}
+                  className="rounded-md  md:w-[900px] object-contain md:object-cover h-[508px]"
+                />
+                <p className="pt-2">
+                  {image + 1}/{imageData.length}
+                </p>
+              </div>
+              {/* ) : (
                 <div>Something went wrong...</div>
-              )}
+              )} */}
             </div>
             <ChevronRightIcon
               onClick={() => handleNextImage()}

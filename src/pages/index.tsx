@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import type { NextPage } from "next";
 import Head from "next/head";
 import NextImage from "next/image";
@@ -72,6 +73,25 @@ const Home: NextPage = () => {
     console.log("menu toggled");
   };
 
+  const [width, setWidth] = useState<number | null>();
+
+  useEffect(() => {
+    const hasWindow = typeof window !== "undefined";
+
+    function getWindowDimensions() {
+      const width = hasWindow ? window.innerWidth : null;
+      const height = hasWindow ? window.innerHeight : null;
+
+      return {
+        width,
+        height,
+      };
+    }
+
+    setWidth(getWindowDimensions().width);
+    console.log(width);
+  }, [width]);
+
   useEffect(() => {
     setImage(0);
     setPropertyData(queryProperty(propertyNum));
@@ -82,8 +102,10 @@ const Home: NextPage = () => {
     if (imageData) {
       imageData.forEach((picture) => {
         console.log(picture?.imageURL);
-        const imgElement: any = new window.Image(); // Use 'window.Image' to explicitly refer to the browser's Image constructor
-        imgElement.src = picture?.imageURL;
+        const imgElement = new window.Image(); // Use 'window.Image' to explicitly refer to the browser's Image constructor
+        if (picture) {
+          imgElement.src = picture.imageURL;
+        }
       });
     }
   }, [imageData]);
@@ -92,15 +114,9 @@ const Home: NextPage = () => {
     return <div>Loading...</div>;
   }
 
-  return (
-    <>
-      <Head>
-        <title>Estate Guesser</title>
-        <meta name="description" content="Guess the house price to win!" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className="flex md:justify-between justify-center flex-row-reverse items-center h-screen w-screen font-mono bg-[#202020] text-white p-12 relative text-center overflow-hidden ">
+  const MenuComponent = () => {
+    return (
+      <>
         {!menuToggle ? (
           <div className="bg-black opacity-60 h-[100vh] -m-12  md:flex justify-between p-2 items-center flex-col rounded-lg w-[4%] hover:opacity-80 transition-all hidden">
             <MenuIcon
@@ -155,7 +171,60 @@ const Home: NextPage = () => {
             </div>
           </>
         )}
+      </>
+    );
+  };
 
+  const HouseImages = () => {
+    return (
+      <div className="text-white text-2xl">
+        <div key={propertyData[0]?.address} className="p-1">
+          {propertyData[0]?.address}
+        </div>
+
+        <img
+          src={imageData[image]?.imageURL}
+          alt="House"
+          width={900}
+          height={508}
+          className="rounded-md md:w-[900px] object-contain md:object-cover md:h-[508px]"
+        />
+      </div>
+    );
+  };
+
+  const ImageComponent = () => {
+    return (
+      <div className="flex flex-col justify-evenly items-center  my-12 border-0 border-blue-400">
+        <HouseImages />
+
+        <div className="flex justify-center items-center border-0 border-green-400 w-full py-2">
+          <div
+            className="flex-1 h-12 border-2 border-red-400 flex justify-center items-center border-opacity-50 rounded-md  hover:text-red-400 cursor-pointer transition-all hover:-translate-x-1 select-none"
+            onClick={() => handlePrevImage()}
+          >
+            <ChevronLeftIcon className="h-14 w-14" />
+          </div>
+
+          <p className="text-3xl px-2">
+            {image + 1}/{imageData.length}
+          </p>
+
+          <div
+            className="h-12 border-2 border-red-400 border-opacity-50 rounded-md flex flex-1 justify-center items-center hover:text-red-400 cursor-pointer transition-all hover:translate-x-1 select-none"
+            onClick={() => handleNextImage()}
+          >
+            <ChevronRightIcon className="h-14 w-14" />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <>
+      <main className="flex md:justify-between justify-center flex-row-reverse items-center h-screen w-screen font-mono bg-[#202020] text-white p-12 relative text-center overflow-hidden ">
+        <MenuComponent />
         <div className="flex flex-col w-screen items-center">
           <div>
             <h1 className="text-4xl font-bold text-center">Estate Guesser</h1>
@@ -166,54 +235,9 @@ const Home: NextPage = () => {
             )}
           </div>
 
-          <div className="flex justify-center items-center my-12">
-            <ChevronLeftIcon
-              onClick={() => handlePrevImage()}
-              className="h-16 w-16 hover:scale-110 hover:text-red-400 cursor-pointer transition-all pr-2 hover:-translate-x-1"
-            />
-            <div className="">
-              {/* {imageLoading && propertyLoading ? (
-                <div className="">
-                  <Image
-                    src={exampleHouse}
-                    alt="House"
-                    width={900}
-                    height={508}
-                    className="rounded-md shadow-lg"
-                  />
-                </div>
-              ) : imageData && propertyData ? ( */}
-              <div className="text-white text-2xl">
-                <div key={propertyData[0]?.address} className="pb-4">
-                  {propertyData[0]?.address}
-                </div>
+          <ImageComponent />
 
-                <img
-                  src={imageData[image]?.imageURL}
-                  alt="House"
-                  width={900}
-                  height={508}
-                  className="rounded-md  md:w-[900px] object-contain md:object-cover h-[508px]"
-                />
-                <p className="pt-2">
-                  {image + 1}/{imageData.length}
-                </p>
-              </div>
-              {/* ) : (
-                <div>Something went wrong...</div>
-              )} */}
-            </div>
-            <ChevronRightIcon
-              onClick={() => handleNextImage()}
-              className="h-16 w-16 hover:scale-110 hover:text-red-400 cursor-pointer transition-all pl-2 hover:translate-x-1 z-0"
-            />
-          </div>
           <div className="flex flex-col -mt-5 mb-5">
-            {/* <input
-              type=""
-              placeholder="Guess Price!"
-              className="w-[40vh] items-center text-center h-8 rounded-xl outline-none text-white bg-[black] shadow-xl "
-            /> */}
             {priceToggle && propertyData ? (
               <h1
                 className="text-xl text-red-400 cursor-pointer hover:scale-110"
@@ -223,7 +247,7 @@ const Home: NextPage = () => {
               </h1>
             ) : (
               <button
-                className="w-36 text-white h-10 rounded-xl outline-none shadow-xl border border-white hover:scale-110 hover:bg-white hover:text-black hover:border-black transition-all"
+                className="w-36 text-white h-10 rounded-md outline-none shadow-xl border border-white hover:scale-110 hover:bg-white hover:text-black hover:border-black transition-all select-none"
                 onClick={() => setPriceToggle(!priceToggle)}
               >
                 Show Price

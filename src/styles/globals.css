@@ -1,7 +1,51 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import-normalize;
+
+:root {
+  --dark: #171717;
+  --light: #eeeeee;
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
 
 body {
-  background-color: #171717;
+  background: var(--dark);
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #0000007d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: hidden;
+}
+
+.modal {
+  width: clamp(25%, 500px, 60%);
+  height: min(50%, 700px);
+
+  padding: 2rem 0 0 0;
+  border-radius: 12px;
+}
+
+.modal-button {
+  position: relative;
+  bottom: 1.5rem;
+  padding: 0 3rem;
+  min-height: 3rem;
+  margin: auto auto 0 auto;
+  background: var(--dark);
+  color: var(--light);
 }

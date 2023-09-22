@@ -15,8 +15,6 @@
 
 body {
   background: var(--dark);
-  height: 100%;
-  overflow-y: hidden;
 }
 
 .backdrop {

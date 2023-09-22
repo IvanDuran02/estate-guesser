@@ -296,16 +296,16 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <main className="flex md:justify-between justify-center flex-row-reverse items-center h-screen w-screen font-mono bg-[#202020] text-white p-12 relative text-center overflow-hidden ">
+      <main className="flex md:justify-between justify-center flex-row-reverse items-center h-auto w-screen font-mono bg-[#202020] text-white p-12 relative text-center overflow-hidden ">
         {/* <MenuComponent /> */}
         <div className="flex flex-col w-screen items-center">
           <div>
             <h1 className="text-4xl font-bold text-center">Estate Guesser</h1>
-            {!session ? (
+            {/* {!session ? (
               <p className="opacity-50 text-center">Login to save progress!</p>
             ) : (
               <p className="opacity-50 text-center">{session.user.name}</p>
-            )}
+            )} */}
           </div>
 
           <ImageComponent />

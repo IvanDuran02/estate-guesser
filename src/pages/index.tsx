@@ -296,7 +296,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <main className="flex md:justify-between justify-center flex-row-reverse items-center h-auto w-screen font-mono bg-[#202020] text-white p-12 relative text-center overflow-hidden ">
+      <main className="flex md:justify-between justify-center flex-row-reverse items-center max-w-screen font-mono bg-[#202020] text-white p-12 relative text-center overflow-hidden ">
         {/* <MenuComponent /> */}
         <div className="flex flex-col w-screen items-center">
           <div>

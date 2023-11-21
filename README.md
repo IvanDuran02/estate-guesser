@@ -20,7 +20,6 @@
 ## About me
 
 Geoguesser like web app built for guessing housing prices in North America. Housing data is scraped of Zillow, around 2022. Link to that repository is here ([Zillow-Scraper](https://github.com/IvanDuran02/zillow-house-finder)). For ease of access, mostly to combat cold start and deactivactions, I coverted the housing data to JSON which can be found in the [assets folder](src/assets).
-.
 
 ---
 

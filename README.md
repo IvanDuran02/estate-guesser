@@ -11,17 +11,16 @@
 
 ## Table of Contents
 
-- [About me - Estate Guesser](#section-1)
-- [Tech Stack](#section-2)
-- [Running locally](#section-3)
+- [About me](#About-me)
+- [Tech Stack](#Stack)
+- [Steps to clone and run locally](#Steps-to-clone-and-run-locally)
 
 ---
 
-## About me - Estate Guesser
+## About me
 
-This is a personal project I decided to make after thinking it would be quite fun to make a geoguesser like game but for housing prices.
-I also made an API that grabs property data for use in this website although I have to transfer it to postgres from sqlite and haven't got around to it.
-as of now there are only 3 houses I manually copied over from my development database.
+Geoguesser like web app built for guessing housing prices in North America. Housing data is scraped of Zillow, around 2022. Link to that repository is here ([Zillow-Scraper](https://github.com/IvanDuran02/zillow-house-finder)). For ease of access, mostly to combat cold start and deactivactions, I coverted the housing data to JSON which can be found in the [assets folder](src/assets).
+.
 
 ---
 
@@ -32,6 +31,7 @@ as of now there are only 3 houses I manually copied over from my development dat
 - [tRPC](https://trpc.io/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [NextAuth.js](https://next-auth.js.org/)
+- [Framer Motion](https://www.framer.com/motion/)
 - [Supabase](https://supabase.io/) (PostgreSQL)
 
 ---

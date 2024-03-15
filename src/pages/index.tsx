@@ -5,12 +5,7 @@ import type { NextPage } from "next";
 import {
     ChevronLeftIcon,
     ChevronRightIcon,
-    CogIcon,
-    LogoutIcon,
-    MenuIcon,
-    XIcon,
 } from "@heroicons/react/solid";
-import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { getRandomPropertyId } from "../utils/getRandomProperty";
 import { queryProperty, queryPropertyImages } from "../utils/queries";
@@ -20,21 +15,11 @@ import useModal from "../hooks/useModal";
 import GuessButton from "../components/Buttons/GuessButton";
 
 const Home: NextPage = () => {
-    // const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
-
-    const { data: session }: any = useSession();
-
     // Modal state
     const { modalOpen, close, open } = useModal();
 
-    // shows price of the house on toggle
-    // const [priceToggle, setPriceToggle] = useState(false);
-
     // switches between images for the house
     const [image, setImage] = useState(0);
-
-    // opens and closes the side hamburger menu
-    const [menuToggle, setMenuToggle] = useState(false);
 
     // gets a random property id from the database
     const [propertyNum, setPropertyNum] = useState(getRandomPropertyId());
@@ -70,11 +55,6 @@ const Home: NextPage = () => {
             }
             setImage(image - 1);
         }
-    };
-
-    const menuOpen = () => {
-        setMenuToggle(!menuToggle);
-        console.log("menu toggled");
     };
 
     const [width, setWidth] = useState<number | null>();
@@ -117,71 +97,6 @@ const Home: NextPage = () => {
     if (!propertyData && !imageData) {
         return <div>Loading...</div>;
     }
-
-    if (propertyData[0]?.price) {
-        console.log(propertyData[0].price!)
-    }
-
-    const MenuComponent = () => {
-        return (
-            <>
-                {!menuToggle ? (
-                    <div className="bg-black opacity-60 h-[100vh] -m-12  md:flex justify-between p-2 items-center flex-col rounded-lg w-[4%] hover:opacity-80 transition-all hidden">
-                        <MenuIcon
-                            className="w-6 lg:w-8  mt-6 hover:opacity-100 cursor-pointer hover:text-red-400"
-                            onClick={() => menuOpen()}
-                        />
-
-                        {session ? (
-                            <div>
-                                <LogoutIcon
-                                    className="w-6 lg:w-8 hover:text-red-400 text-white"
-                                    onClick={() => signOut()}
-                                />
-                                <br />
-                                <CogIcon className="w-6 lg:w-8 hover:animate-spin hover:text-red-400 transition-all mb-6" />
-                            </div>
-                        ) : (
-                            <CogIcon className="w-6 lg:w-8 hover:animate-spin hover:text-red-400 transition-all mb-6" />
-                        )}
-                    </div>
-                ) : (
-                    <>
-                        <div className="bg-black opacity-60 h-[100vh] -m-12  md:flex flex-row-reverse p-2 items-center rounded-lg w-[14%] hover:opacity-80 transition-all hidden z-10">
-                            <div className="flex flex-col justify-between h-screen items-center p-2">
-                                <XIcon
-                                    className="w-6 lg:w-8  mt-6 hover:opacity-100 cursor-pointer hover:text-red-400"
-                                    onClick={() => menuOpen()}
-                                />
-
-                                <CogIcon className="w-6 lg:w-8 hover:animate-spin hover:text-red-400 transition-all mb-6" />
-                            </div>
-                            <div className="h-[91vh] bg-red-400 w-1 rounded-full" />
-                            <div className="flex justify-center items-start pt-24 w-[100%] h-full">
-                                {!session ? (
-                                    <button
-                                        onClick={() => signIn()}
-                                        className="hover:text-red-400 hover:scale-105 transition-all"
-                                    >
-                                        Sign In
-                                    </button>
-                                ) : (
-                                    <div>
-                                        <button
-                                            onClick={() => signOut()}
-                                            className="hover:text-red-400 hover:scale-105 transition-all"
-                                        >
-                                            Sign Out!
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </>
-                )}
-            </>
-        );
-    };
 
     const HouseImages = () => {
         return (

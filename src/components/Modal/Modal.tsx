@@ -1,32 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import Backdrop from "./Backdrop";
 
-const dropIn = {
-    hidden: {
-        y: "-100vh",
-        opacity: 0,
-    },
-    visible: {
-        y: "0",
-        opacity: 1,
-        transition: {
-            duration: 0.1,
-            type: "spring",
-            damping: 25,
-            stiffness: 500,
-        },
-    },
-    exit: {
-        y: "100vh",
-        opacity: 0,
-    },
-};
-
 const Modal = ({
-    modalOpen,
     handleClose,
-    text,
     housePrice,
     guessPrice,
 }: {
@@ -39,6 +16,14 @@ const Modal = ({
     const [currency, setCurrency] = useState("");
     const [win, isWinner] = useState(false);
     const [difference, setDifference] = useState("");
+
+    const ShakeVariant = ({
+        hidden: {},
+        visible: {
+            [win ? "y" : "x"]: win ? [10, -10, 10, -10] : [-10, 10, -10, 10],
+            transition: { duration: 0.3, repeat: 2 }, // Adjust duration and repeat count as needed
+        },
+    });
 
     function convertToInteger(str: string | number | null) {
         // Check if str is a string
@@ -60,48 +45,41 @@ const Modal = ({
         return intValue;
     }
 
-    function calculateStats(
-        guess: string | number | null,
-        price: string | number | null
-    ) {
-        guess = convertToInteger(guessPrice);
-        price = convertToInteger(price);
-        // Calculate the absolute difference between actual and guess
-        if (price && guess) {
-            const difference = Math.abs(price - guess);
+    const calculateStats = useCallback(
+        (guess: string | number | null, price: string | number | null) => {
+            guess = convertToInteger(guess);
+            price = convertToInteger(price);
+            // Calculate the absolute difference between actual and guess
+            if (price && guess) {
+                const difference = Math.abs(price - guess);
 
-            // Calculate the percentage difference
-            const percentageDifference = (difference / Math.abs(price)) * 100;
+                // Calculate the percentage difference
+                const percentageDifference = (difference / Math.abs(price)) * 100;
 
-            return {
-                percentageDifference: percentageDifference,
-                difference: difference,
-            };
-        }
-    }
-
-    const ShakeVariant = ({
-        hidden: {},
-        visible: {
-            [win ? "y" : "x"]: win ? [10, -10, 10, -10] : [-10, 10, -10, 10],
-            transition: { duration: 0.3, repeat: 2 }, // Adjust duration and repeat count as needed
+                return {
+                    percentageDifference: percentageDifference,
+                    difference: difference,
+                };
+            }
+            // Return null if either price or guess is not valid
+            return null;
         },
-    });
+        []
+    );
 
     const modalControls = useAnimation();
+
     useEffect(() => {
-
-
         function formatPrice() {
             let diff: string | number =
                 calculateStats(guessPrice, housePrice)?.difference || 0; // undefined when correct guess...
-            let percDiff: any = calculateStats(
+            let percDiff: string | number | undefined = calculateStats(
                 guessPrice,
                 housePrice
             )?.percentageDifference;
 
             // If the difference is within the specified percentage
-            if (percDiff <= 10) {
+            if (percDiff != null && percDiff <= 10) {
                 console.log("Winner is true")
                 isWinner(true);
                 modalControls.start("visible");
@@ -111,7 +89,7 @@ const Modal = ({
             }
 
             // Round the percentageDifference to two decimal places
-            percDiff = percDiff.toFixed(2);
+            percDiff = percDiff?.toFixed(2);
 
             diff = currency + diff.toLocaleString();
             percDiff = percDiff?.toString() + "%";
@@ -124,7 +102,7 @@ const Modal = ({
             };
         }
         console.log(formatPrice().diff, formatPrice().percDiff, win);
-    }, [win]);
+    }, [win, modalControls, currency, housePrice, guessPrice, calculateStats]);
 
     return (
         <Backdrop onClick={handleClose}>
